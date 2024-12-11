@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GeoAR.js Demo</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.1/aframe/build/aframe-ar.min.js"></script>
-</head>
-<body style="margin: 0; overflow: hidden;">
+
     <!-- Mostrar ubicación del usuario -->
     <div id="userLocation" style="position: fixed; top: 10px; left: 10px; z-index: 10; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px; border-radius: 5px;">
         Cargando ubicación...
     </div>
 
-    <!-- Configuración de la escena -->
-    <a-scene 
-        embedded 
-        vr-mode-ui="enabled: false" 
+    <!-- Escena de realidad aumentada -->
+    <a-scene
+        embedded
+        vr-mode-ui="enabled: false"
         arjs="sourceType: webcam; debugUIEnabled: false;"
     >
         <a-assets>
@@ -26,34 +17,39 @@
         </a-assets>
 
         <!-- Entidades GPS -->
-        <a-entity 
-            gltf-model="#modelo1" 
-            gps-entity-place="longitude: -101.3942; latitude: 20.3913;" 
-            scale="0.15 0.15 0.15" 
+        <a-entity
+            gltf-model="#modelo1"
+            gps-entity-place="latitude: 20.3913; longitude: -101.3942"
+            scale="0.1 0.1 0.1"
         ></a-entity>
 
-        <a-entity 
-            gltf-model="#modelo2" 
-            gps-entity-place="longitude: -101.3945; latitude: 20.3915;" 
-            scale="0.15 0.15 0.15" 
+        <a-entity
+            gltf-model="#modelo2"
+            gps-entity-place="latitude: 20.3915; longitude: -101.3945"
+            scale="0.1 0.1 0.1"
         ></a-entity>
 
-        <!-- Cámara con GPS -->
+        <!-- Cámara GPS -->
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 
     <script>
         // Mostrar la ubicación del usuario en la interfaz
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const userLat = position.coords.latitude;
-                const userLon = position.coords.longitude;
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
 
-                document.getElementById("userLocation").innerHTML = `Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon}`;
-            }, (error) => {
-                console.error("Error obteniendo la ubicación:", error);
-                document.getElementById("userLocation").innerText = "No se pudo obtener la ubicación.";
-            });
+                    console.log(`Latitud: ${userLat}, Longitud: ${userLon}`);
+                    document.getElementById("userLocation").innerHTML = `Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon}`;
+                },
+                (error) => {
+                    console.error("Error obteniendo la ubicación:", error);
+                    document.getElementById("userLocation").innerText = "No se pudo obtener la ubicación.";
+                },
+                { enableHighAccuracy: true }
+            );
         } else {
             alert("La geolocalización no es soportada en este navegador.");
         }
