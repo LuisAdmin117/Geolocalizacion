@@ -10,15 +10,15 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/';
 
-        const targetLatitude = 20.399072553658847;  // Latitud
-        const targetLongitude = -101.22335561854901;  // Longitud
+        const targetLatitude = 20.3913;  // Latitud
+        const targetLongitude = -101.3942;  // Longitud
 
         function checkUserLocation(position) {
             const userLat = position.coords.latitude;
             const userLon = position.coords.longitude;
 
             // Obtenemos las coordenadas del usuario para mostrarlas en pantalla y guiarnos
-            document.getElementById('userLocation').innerHTML = `Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon}`;
+            document.getElementById('userLocation').innerHTML = Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon};
 
             // Se calculan las coordenadas entre la persona y el objeto
             const distance = Math.sqrt(Math.pow(userLat - targetLatitude, 2) + Math.pow(userLon - targetLongitude, 2));
@@ -48,9 +48,21 @@
 
     <a-scene vr-mode-ui="enabled: false" embedded arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
 
-       
-        <a-entity id="geoEntity" geometry="primitive: box" rotation="0 180 0" scale="1 1 1" 
-                  gps-entity-place="longitude: 20.3987665; latitude: -101.2238308;" visible="false"></a-entity>
+       <a-assets>
+
+        <a-asset-item id="modelo" src="modelos/plants_vs_zombies_-_peashooter.glb" timeout="10000"></a-asset-item>
+       <a-asset-item id="modelo2" src="modelos/chomper.glb" timeout="10000"></a-asset-item>
+   
+       </a-assets>
+        
+        <a-entity id="#modelo" rotation="0 180 0" scale="1 1 1" 
+                  gps-entity-place="longitude: 20.3913; latitude: -101.3942;" visible="false"></a-entity>
+
+        <a-entity id="#modelo2" rotation="0 180 0" scale="1 1 1" 
+                  gps-entity-place="longitude: 20.3984; latitude: -101.2221;" visible="false"></a-entity>
+
+        <a-entity id="#modelo3" rotation="0 180 0" scale="1 1 1" 
+                  gps-entity-place="longitude: 20.3990; latitude: -101.2228;" visible="false"></a-entity>   
 
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
