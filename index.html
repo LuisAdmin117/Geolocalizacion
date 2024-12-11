@@ -3,50 +3,33 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>GeoAR.js Demo</title>
-    <script src='https://aframe.io/releases/1.2.0/aframe.min.js'></script>
+    <title>GeoAR.js demo</title>
+    <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script>
+        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+    </script>
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
-    <!-- Coordenadas del usuario -->
-    <div id="userLocation" style="position: fixed; top: 10px; left: 10px; z-index: 10; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px; border-radius: 5px;">
-        Cargando ubicación...
-    </div>
+    <a-scene
+        vr-mode-ui="enabled: false"
+		embedded
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; 
+        displayHeight: 960; debugUIEnabled: false;'>
 
-    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;">
         <a-assets>
-            <a-asset-item id="modelo1" src="modelos/plants_vs_zombies_-_peashooter.glb" timeout="10000"></a-asset-item>
-            <a-asset-item id="modelo2" src="modelos/chomper.glb" timeout="10000"></a-asset-item>
-            <a-asset-item id="modelo3" src="modelos/otro_modelo.glb" timeout="10000"></a-asset-item>
-        </a-assets>
-        
-        <!-- Modelos 3D con coordenadas GPS -->
-        <a-entity gltf-model="#modelo1" rotation="0 180 0" scale="1 1 1"
-                  gps-entity-place="longitude: -101.3942; latitude: 20.3913;" visible="false"></a-entity>
 
-        <a-entity gltf-model="#modelo2" rotation="0 180 0" scale="1 1 1"
-                  gps-entity-place="longitude: -101.2221; latitude: 20.3984;" visible="false"></a-entity>
+     <a-asset-item id="modelo" src="modelos/bat-wing_1989.glb"></a-asset-item>
+    <a-asset-item id="modelo2" src="modelos/batmobil_car.glb"></a-asset-item>
 
-        <a-entity gltf-model="#modelo3" rotation="0 180 0" scale="1 1 1"
-                  gps-entity-place="longitude: -101.2228; latitude: 20.3990;" visible="false"></a-entity>
+    </a-assets>
 
+        <a-entity gltf-model="#modelo" rotation="0 180 0" 
+        scale="0.15 0.15 0.15" gps-entity-place="longitude: 20.398404; latitude: -101.223234;"/>
+            
         <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
-
-    <script>
-        // Obtener la ubicación del usuario y mostrarla en la interfaz
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const userLat = position.coords.latitude;
-                const userLon = position.coords.longitude;
-
-                document.getElementById('userLocation').innerHTML = `Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon}`;
-            });
-        } else {
-            alert("Geolocalización no soportada por este navegador.");
-        }
-    </script>
+	</a-scene>
 </body>
 </html>
