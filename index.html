@@ -11,11 +11,9 @@
   <!-- Coordenadas del usuario -->
     <div id="userLocation" style="position: fixed; top: 10px; left: 10px; z-index: 10; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px; border-radius: 5px;">
         Cargando ubicación...
-    </div> 
-  <a-scene vr-mode-ui="enabled: false" embedded 
-    arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; 
-        displayHeight: 960; debugUIEnabled: false;'>
+    </div>  
 
+  <a-scene vr-mode-ui="enabled: false" embedded arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>  
         <a-assets>
 
             <a-asset-item id="modelo" src="modelos/plants_vs_zombies_-_peashooter.glb"></a-asset-item>
@@ -29,17 +27,32 @@
         <a-camera gps-camera rotation-reader></a-camera></body>
 
                  <script>
-        // Obtener la ubicación del usuario y mostrarla en la interfaz
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const userLat = position.coords.latitude;
-                const userLon = position.coords.longitude;
+         const targetLatitude = 20.399072553658847;  // Latitud
+        const targetLongitude = -101.22335561854901;  // Longitud
 
-                document.getElementById('userLocation').innerHTML = `Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon}`;
-            });
+        function checkUserLocation(position) {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+
+            // Obtenemos las coordenadas del usuario para mostrarlas en pantalla y guiarnos
+            document.getElementById('userLocation').innerHTML = `Ubicación del usuario:<br>Latitud: ${userLat}<br>Longitud: ${userLon}`;
+
+            // Se calculan las coordenadas entre la persona y el objeto
+            const distance = Math.sqrt(Math.pow(userLat - targetLatitude, 2) + Math.pow(userLon - targetLongitude, 2));
+
+            // Mostrar el elemento si se encuentra a menos de 100 metros
+            if (distance < 0.01) {  
+                document.getElementById('geoEntity').setAttribute('visible', 'true');
+            } else {
+                document.getElementById('geoEntity').setAttribute('visible', 'false');
+            }
+        }
+
+        // Obtener la ubicación del usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(checkUserLocation);
         } else {
             alert("Geolocalización no soportada por este navegador.");
-        }
-    </script>
+        }    </script>
     </body>
     </html>
